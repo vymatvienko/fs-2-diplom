@@ -15,15 +15,16 @@ class SessionSeeder extends Seeder
     public function run(): void
     {
         Session::create([
-            'movie_id' => 1,  // ID фильма (например, Inception)
-            'hall_id' => 1,    // ID зала (например, Main Hall)
-            'start_time' => Carbon::now()->addDay(),  // Сеанс завтра
-        ]);
+            'movie_id' => 1,
+            'hall_id' => 1,
+            'start_time' => Carbon::parse('2025-02-25 08:20:44'), // <== Исправлено
+        ]); 
 
         Session::create([
             'movie_id' => 2,  // ID фильма (например, The Dark Knight)
             'hall_id' => 2,    // ID зала (например, VIP Hall)
             'start_time' => Carbon::now()->addDays(2),  // Сеанс через два дня
         ]);
+        
     }
 }

@@ -9,17 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('movies', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Это создаст movie_id как PRIMARY KEY AUTO_INCREMENT
             $table->string('title');
-            $table->text('description');
-            $table->date('release_date');
             $table->integer('duration');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
+        
     }
+
 
     /**
      * Reverse the migrations.

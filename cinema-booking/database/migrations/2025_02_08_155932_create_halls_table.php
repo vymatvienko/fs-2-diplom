@@ -6,24 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('halls', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('capacity');
-            $table->timestamps();
+        Schema::table('halls', function (Blueprint $table) {
+            $table->integer('rows')->default(10);
+            $table->integer('seats')->default(8);
+            $table->json('layout')->nullable();
+            $table->integer('standard_price')->default(0);
+            $table->integer('vip_price')->default(0);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('halls');
+        Schema::table('halls', function (Blueprint $table) {
+            $table->dropColumn(['rows', 'seats', 'layout', 'standard_price', 'vip_price']);
+        });
     }
 };

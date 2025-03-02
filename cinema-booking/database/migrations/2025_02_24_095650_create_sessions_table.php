@@ -19,6 +19,14 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('movie_sessions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('movie_id')->constrained()->onDelete('cascade');
+            $table->foreignId('hall_id')->constrained()->onDelete('cascade');
+            $table->timestamp('start_time');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,5 +35,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('movie_sessions');
     }
 };
