@@ -237,33 +237,44 @@ async function deleteSeance(event) {
     }
 }
 
-document.getElementById("add-movie").addEventListener("click", async function () {
+document.getElementById("add-movie").addEventListener("click", async () => {
     const title = document.getElementById("movie-title").value.trim();
-    const duration = parseInt(document.getElementById("movie-duration").value.trim());
+    const duration = document.getElementById("movie-duration").value.trim();
+    const description = document.getElementById("movie-description").value.trim();
 
-    body: JSON.stringify({ title, duration: parseInt(duration) })
-
-    if (!title || isNaN(duration) || duration <= 0) {
-        alert("Введите корректные данные!");
+    if (!title || !duration) {
+        alert("Пожалуйста, заполните все поля!");
         return;
     }
+
+    const requestData = {
+        title: title,
+        duration: Number(duration),
+        description: description
+    };
 
     try {
         const response = await fetch("/api/movies", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({ title, duration })
+            body: JSON.stringify(requestData)
         });
 
-        if (!response.ok) throw new Error("Ошибка при добавлении фильма");
-
-        document.getElementById("movie-title").value = "";
-        document.getElementById("movie-duration").value = "";
-
-        await loadMovies(); // Перезагружаем список фильмов
+        if (response.ok) {
+            alert("Фильм успешно добавлен!");
+            document.getElementById("movie-title").value = "";
+            document.getElementById("movie-duration").value = "";
+            document.getElementById("movie-description").value = "";
+        } else {
+            const errorData = await response.json();
+            alert("Ошибка: " + errorData.error);
+        }
     } catch (error) {
-        console.error("Ошибка добавления фильма:", error);
+        console.error("Ошибка при добавлении фильма:", error);
+        alert("Ошибка при добавлении фильма!");
     }
 });
+

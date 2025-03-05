@@ -8,6 +8,7 @@ use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\Admin\HallPriceController;
 use App\Http\Controllers\Api\MovieController;
+use App\Http\Controllers\Api\MovieScheduleController;
 
 Route::post('/halls', [HallController::class, 'store']);
 Route::get('/halls', [HallController::class, 'index']);
@@ -35,12 +36,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/movie-schedule', [MovieScheduleController::class, 'index']);

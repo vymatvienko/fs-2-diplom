@@ -20,12 +20,14 @@ class MovieController extends Controller
         try {
             $request->validate([
                 'title' => 'required|string|max:255',
-                'duration' => 'required|integer|min:1'
+                'duration' => 'required|integer|min:1',
+                'description' => 'nullable|string'
             ]);
 
             $movie = Movie::create([
                 'title' => $request->title,
-                'duration' => $request->duration
+                'duration' => $request->duration,
+                'description' => $request->description ?? ''
             ]);
 
             return response()->json($movie, 201);
@@ -33,6 +35,5 @@ class MovieController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 
 }

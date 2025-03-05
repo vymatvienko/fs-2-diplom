@@ -704,6 +704,23 @@ textarea.conf-step__input {
   background-color: #218838;
 }
 
+.conf-step__form-group {
+  margin-bottom: 10px;
+}
+
+.conf-step__input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.conf-step__textarea {
+  resize: vertical;
+  height: 60px;
+}
+
 
 
 /*# sourceMappingURL=styles.css.map */

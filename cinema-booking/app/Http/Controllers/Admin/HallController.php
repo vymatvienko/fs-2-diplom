@@ -74,7 +74,7 @@ class HallController extends Controller
         return response()->json([
             'rows' => $hall->rows ?? 10,
             'seats' => $hall->seats ?? 8,
-            'layout' => json_decode($hall->layout) ?? [],
+            'layout' => $hall->layout ? json_decode($hall->layout) : array_fill(0, 10, array_fill(0, 8, "standard")),
             'standard_price' => $hall->standard_price ?? 0,
             'vip_price' => $hall->vip_price ?? 0,
         ]);

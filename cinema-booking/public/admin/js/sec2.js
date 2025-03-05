@@ -44,6 +44,11 @@ async function loadHallData(hallId) {
     document.getElementById("rows-count").value = data.rows;
     document.getElementById("seats-count").value = data.seats;
 
+    console.log("Загруженный layout:", data.layout);
+    if (!Array.isArray(data.layout)) {
+        data.layout = Array(10).fill(Array(8).fill("standard"));
+    }
+
     console.log("Загруженные данные зала:", data);
 
     renderHallLayout(data.layout);

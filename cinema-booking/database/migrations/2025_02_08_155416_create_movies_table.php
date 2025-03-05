@@ -12,12 +12,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('movies', function (Blueprint $table) {
-            $table->id(); // Это создаст movie_id как PRIMARY KEY AUTO_INCREMENT
+            $table->id();
             $table->string('title');
+            $table->text('description'); 
+            $table->date('release_date')->nullable();
             $table->integer('duration');
-            $table->string('description')->nullable();
             $table->timestamps();
         });
+        
         
     }
 
