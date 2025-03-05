@@ -78,6 +78,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadHalls();
     await loadMovies();
     await loadSeances();
+
+    document.getElementById("date-picker").addEventListener("change", function (event) {
+        loadSeances(event.target.value);
+    });
+    
 });
 
 // Загрузка залов
@@ -156,7 +161,7 @@ function getFixedColor(movieId) {
     return movieColors[movieId];
 }
 
-async function loadSeances() {
+async function loadSeances(selectedDate = null) {
     try {
         const response = await fetch("/api/seances");
         const seances = await response.json();
@@ -165,18 +170,20 @@ async function loadSeances() {
 
         const halls = {};
 
-        // Группируем сеансы по залам
+        // Группируем сеансы по залам, фильтруя по дате
         seances.forEach(seance => {
-            if (!halls[seance.hall.id]) {
-                halls[seance.hall.id] = {
-                    name: seance.hall.name,
-                    seances: []
-                };
+            if (!selectedDate || seance.date === selectedDate) { // Фильтр по дате
+                if (!halls[seance.hall.id]) {
+                    halls[seance.hall.id] = {
+                        name: seance.hall.name,
+                        seances: []
+                    };
+                }
+                halls[seance.hall.id].seances.push(seance);
             }
-            halls[seance.hall.id].seances.push(seance);
         });
 
-        // Рисуем каждый зал
+        // Рисуем залы и сеансы
         Object.values(halls).forEach(hall => {
             const hallElement = document.createElement("div");
             hallElement.classList.add("conf-step__seances-hall");
@@ -196,12 +203,11 @@ async function loadSeances() {
 
                 const duration = seance.movie.duration;
                 const width = (duration / 2) + "px";  // Масштаб 2 пикселя за минуту
-
                 const left = ((startHour * 60 + startMin) / 2) + "px";
 
                 movieElement.style.width = width;
                 movieElement.style.left = left;
-                movieElement.style.backgroundColor = getFixedColor(seance.movie.id); // Используем фиксированный цвет
+                movieElement.style.backgroundColor = getFixedColor(seance.movie.id);
 
                 movieElement.innerHTML = `
                     <p class="conf-step__seances-movie-title">${seance.movie.title}</p>
@@ -226,16 +232,18 @@ async function loadSeances() {
 }
 
 
+
 // Функция для удаления сеанса
 async function deleteSeance(event) {
     const seanceId = event.target.dataset.id;
     try {
         await fetch(`/api/seances/${seanceId}`, { method: "DELETE" });
-        await loadSeances();  // Перезагружаем список
+        await loadSeances(document.getElementById("date-picker").value); // Перезагружаем с выбранной датой
     } catch (error) {
         console.error("Ошибка удаления сеанса:", error);
     }
 }
+
 
 document.getElementById("add-movie").addEventListener("click", async () => {
     const title = document.getElementById("movie-title").value.trim();
@@ -277,4 +285,3 @@ document.getElementById("add-movie").addEventListener("click", async () => {
         alert("Ошибка при добавлении фильма!");
     }
 });
-

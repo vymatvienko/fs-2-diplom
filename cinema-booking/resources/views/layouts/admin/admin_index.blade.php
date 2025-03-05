@@ -128,6 +128,10 @@
                         <input type="time" id="seance-time">
                     </label>
                 </p>
+                <div class="conf-step__date-picker">
+                    <label for="date-picker">Выберите дату:</label>
+                    <input type="date" id="date-picker" name="date-picker" />
+                </div>
                 <p class="conf-step__paragraph">
                     <button id="add-seance" class="conf-step__button conf-step__button-accent">Добавить сеанс</button>
                 </p>
@@ -156,10 +160,6 @@
                     <button id="add-movie" class="conf-step__button conf-step__button-accent">Добавить фильм</button>
                 </div>
 
-
-
-
-
                 Список доступных фильмов
                 <div class="conf-step__movies" id="movies-list"></div>
 
@@ -187,7 +187,7 @@
     <script src="{{ asset('admin/js/accordeon.js') }}"></script>
     <script src="{{ asset('admin/js/sec2.js') }}" defer></script>
     <script src="{{ asset('admin/js/sec3.js') }}"></script>
-    <script src="{{ asset('admin/js/sec4.js') }}"></script>
+    <script src="{{ asset('admin/js/sec4.js') }}" defer></script>
 </body>
 
 </html>
