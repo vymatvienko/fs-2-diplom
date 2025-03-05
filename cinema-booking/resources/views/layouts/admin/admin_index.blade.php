@@ -185,7 +185,7 @@
         </section>
     </main>
     <script src="{{ asset('admin/js/accordeon.js') }}"></script>
-    <script src="{{ asset('admin/js/sec2.js') }}"></script>
+    <script src="{{ asset('admin/js/sec2.js') }}" defer></script>
     <script src="{{ asset('admin/js/sec3.js') }}"></script>
     <script src="{{ asset('admin/js/sec4.js') }}"></script>
 </body>

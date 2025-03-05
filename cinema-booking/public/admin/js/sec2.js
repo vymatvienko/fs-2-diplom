@@ -4,7 +4,12 @@ document.addEventListener("DOMContentLoaded", () => {
     loadHalls();
 });
 
+// async function loadHalls() {
+//     console.log("Функция loadHalls вызвана!");
+// }
+
 async function loadHalls() {
+    console.log("www");
     const response = await fetch("/api/halls");
     const halls = await response.json();
 
@@ -19,6 +24,7 @@ async function loadHalls() {
         `;
         hallList.appendChild(li);
     });
+
 
     // Выбираем первый зал по умолчанию и загружаем его данные
     if (halls.length > 0) {
@@ -35,7 +41,8 @@ document.querySelector("#halls-price-list").addEventListener("change", (event) =
 async function loadHallData(hallId) {
     const response = await fetch(`/api/halls/${hallId}/layout`);
     const data = await response.json();
-    
+
+   
     // Сохраняем текущие данные
     data.hallId = hallId; 
     currentHallData = data;
@@ -49,8 +56,7 @@ async function loadHallData(hallId) {
         data.layout = Array(10).fill(Array(8).fill("standard"));
     }
 
-    console.log("Загруженные данные зала:", data);
-
+    console.log("Загруженный layout:", data.layout);
     renderHallLayout(data.layout);
 }
 
