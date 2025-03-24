@@ -71,7 +71,7 @@
                 </div>
 
                 <fieldset class="conf-step__buttons text-center">
-                    <button class="conf-step__button conf-step__button-regular" id="cancel">Отмена</button>
+                    <!-- <button class="conf-step__button conf-step__button-regular" id="cancel">Отмена</button> -->
                     <button class="conf-step__button conf-step__button-accent" id="save-conf-hall">Сохранить</button>
                 </fieldset>
             </div>
@@ -99,7 +99,7 @@
                 </div>
 
                 <fieldset class="conf-step__buttons text-center">
-                    <button class="conf-step__button conf-step__button-regular">Отмена</button>
+                    <!-- <button class="conf-step__button conf-step__button-regular">Отмена</button> -->
                     <input type="submit" id="create-pricehall" value="Сохранить"
                         class="conf-step__button conf-step__button-accent">
                 </fieldset>
@@ -168,7 +168,7 @@
 
                 <!-- Кнопки -->
                 <fieldset class="conf-step__buttons text-center">
-                    <button class="conf-step__button conf-step__button-regular">Отмена</button>
+                    <!-- <button class="conf-step__button conf-step__button-regular">Отмена</button> -->
                     <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
                 </fieldset>
             </div>
@@ -180,14 +180,15 @@
             </header>
             <div class="conf-step__wrapper text-center">
                 <p class="conf-step__paragraph">Всё готово, теперь можно:</p>
-                <button class="conf-step__button conf-step__button-accent">Открыть продажу билетов</button>
+                <button id="open-sales" class="conf-step__button conf-step__button-accent">Открыть продажу билетов</button>
             </div>
         </section>
     </main>
     <script src="{{ asset('admin/js/accordeon.js') }}"></script>
-    <script src="{{ asset('admin/js/sec2.js') }}" defer></script>
+    <script src="{{ asset('admin/js/common.js') }}" defer></script>
+    <script src="{{ asset('admin/js/sec2.js') }}"></script>
     <script src="{{ asset('admin/js/sec3.js') }}"></script>
-    <script src="{{ asset('admin/js/sec4.js') }}" defer></script>
+    <script src="{{ asset('admin/js/sec4.js') }}"></script>
 </body>
 
 </html>

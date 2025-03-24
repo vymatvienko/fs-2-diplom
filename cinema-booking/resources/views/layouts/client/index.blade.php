@@ -20,13 +20,15 @@
             </div>
         </div>
 
+        @if($movie->seances->isNotEmpty())
+        <!-- Проверяем, есть ли сеансы -->
         @foreach ($movie->seances->groupBy('hall_id') as $hallId => $seances)
         <div class="movie-seances__hall">
             <h3 class="movie-seances__hall-title">Зал {{ $seances->first()->hall->name }}</h3>
             <ul class="movie-seances__list">
                 @foreach ($seances as $seance)
                 <li class="movie-seances__time-block">
-                    <a class="movie-seances__time" href="javascript:void(0);">
+                    <a class="movie-seances__time" href="{{ route('booking', ['seance' => $seance->id]) }}">
                         {{ \Carbon\Carbon::parse($seance->start_time)->format('H:i') }}
                     </a>
                 </li>
@@ -34,7 +36,7 @@
             </ul>
         </div>
         @endforeach
-
+        @endif
 
     </section>
     @endforeach

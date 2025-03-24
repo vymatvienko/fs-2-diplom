@@ -75,7 +75,7 @@ function getRandomColor() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await loadHalls();
+    // await loadHalls();
     await loadMovies();
     await loadSeances();
 
@@ -87,22 +87,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // Загрузка залов
 async function loadHalls() {
-    try {
-        const response = await fetch("/api/halls");
-        const halls = await response.json();
-        const hallSelect = document.getElementById("seance-hall");
+    const response = await fetch("/api/halls");
+    const halls = await response.json();
 
-        hallSelect.innerHTML = "";
-        halls.forEach(hall => {
-            const option = document.createElement("option");
-            option.value = hall.id;
-            option.textContent = hall.name;
-            hallSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Ошибка загрузки залов:", error);
-    }
+    const hallSelect = document.getElementById("seance-hall");
+    hallSelect.innerHTML = ""; // Очищаем перед добавлением
+
+    halls.forEach(hall => {
+        const option = document.createElement("option");
+        option.value = hall.id;
+        option.textContent = hall.name;
+        option.setAttribute("data-standard-price", hall.standard_price ?? 0);  // ✅ Добавляем цены
+        option.setAttribute("data-vip-price", hall.vip_price ?? 0);            // ✅ Добавляем цены
+        hallSelect.appendChild(option);
+    });
 }
+
 
 // Загрузка фильмов
 async function loadMovies() {
@@ -124,12 +124,27 @@ async function loadMovies() {
 }
 
 document.getElementById("add-seance").addEventListener("click", async function () {
-    const hallId = document.getElementById("seance-hall").value;
+    const hallSelect = document.getElementById("seance-hall");
+    const hallId = hallSelect.value;
     const movieId = document.getElementById("seance-movie").value;
     const startTime = document.getElementById("seance-time").value;
+    const date = document.getElementById("date-picker").value;
 
-    if (!hallId || !movieId || !startTime) {
-        alert("Выберите зал, фильм и укажите время!");
+    // Проверяем, получаем ли цены
+    // const standardPrice = hallSelect.options[hallSelect.selectedIndex].dataset.standardPrice;
+    // const vipPrice = hallSelect.options[hallSelect.selectedIndex].dataset.vipPrice;
+
+    const selectedOption = hallSelect.options[hallSelect.selectedIndex];
+    const standardPrice = selectedOption.getAttribute("data-standard-price") ?? 0;
+    const vipPrice = selectedOption.getAttribute("data-vip-price") ?? 0;
+
+
+    console.log("hallId:", hallId);
+    console.log("standardPrice:", standardPrice);
+    console.log("vipPrice:", vipPrice);
+
+    if (!hallId || !movieId || !startTime || !date) {
+        alert("Выберите зал, фильм и укажите время и дату!");
         return;
     }
 
@@ -140,16 +155,29 @@ document.getElementById("add-seance").addEventListener("click", async function (
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({ hall_id: hallId, movie_id: movieId, start_time: startTime })
+            body: JSON.stringify({
+                hall_id: hallId,
+                movie_id: movieId,
+                start_time: startTime,
+                date: date,
+                standard_price: standardPrice ?? 0,  // ✅ Подставляем 0, если пусто
+                vip_price: vipPrice ?? 0              // ✅ Подставляем 0, если пусто
+            })
         });
 
-        if (!response.ok) throw new Error("Ошибка при добавлении сеанса");
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Ошибка при добавлении сеанса");
+        }
 
+        alert("Сеанс успешно добавлен!");
         await loadSeances();
     } catch (error) {
         console.error("Ошибка добавления сеанса:", error);
+        alert("Ошибка при добавлении сеанса!");
     }
 });
+
 
 const movieColors = {}; // Храним цвета для фильмов
 

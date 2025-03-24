@@ -430,3 +430,18 @@ body {
     display: none;
   }
 }
+
+#qr-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto; /* Добавляем отступ сверху */
+  width: 150px;
+  height: 150px;
+}
+
+
+
+
+
+

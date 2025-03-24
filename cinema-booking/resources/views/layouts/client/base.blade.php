@@ -8,6 +8,7 @@
     <title>ИдёмВКино</title>
     <link rel="stylesheet" href="{{ asset('client/css/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('client/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('client/css/book.css') }}">
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&amp;subset=cyrillic,cyrillic-ext,latin-ext"
         rel="stylesheet">
@@ -18,6 +19,7 @@
         <h1 class="page-header__title">Идём<span>в</span>кино</h1>
     </header>
 
+    @unless(request()->routeIs('booking'))
     <nav class="page-nav">
         @foreach ($dates as $date)
         <a class="page-nav__day {{ $date->is_today ? 'page-nav__day_today' : '' }} {{ $date->is_selected ? 'page-nav__day_chosen' : '' }}"
@@ -27,6 +29,9 @@
         </a>
         @endforeach
     </nav>
+    @endunless
+
+
 
 
 

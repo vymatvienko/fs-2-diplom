@@ -1,8 +1,13 @@
 let currentHallData = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadHalls();
+// document.addEventListener("DOMContentLoaded", () => {
+//     loadHalls();
+// });
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadHallData(document.querySelector("input[name='chairs-hall']:checked")?.value);
 });
+
 
 // async function loadHalls() {
 //     console.log("Функция loadHalls вызвана!");
@@ -119,6 +124,8 @@ document.getElementById("update-rows-seats").addEventListener("click", async () 
         },
         body: JSON.stringify({ rows, seats })
     });
+
+    location.reload();
 
     if (response.ok) {
         alert("Количество рядов и мест обновлено!");

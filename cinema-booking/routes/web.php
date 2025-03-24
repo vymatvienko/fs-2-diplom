@@ -7,14 +7,29 @@ use App\Http\Controllers\Admin\HallPriceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SeanceController;
 
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
+// Route::get('/seance/{id}', [BookingController::class, 'show'])->name('booking');  
+Route::get('/booking/{seance}', [BookingController::class, 'index'])->name('booking');
+Route::get('/booking', [\App\Http\Controllers\BookingController::class, 'index']);
 
-Route::get('/booking/{seance}', function ($seance) {
-    return "Страница бронирования для сеанса $seance пока не реализована.";
-})->name('booking');
 
+// Route::get('/payment', function () {
+//     return view('layouts.client.payment');
+// });
+
+// Route::get('/payment/{seance}', [PaymentController::class, 'show'])->name('payment');
+// Route::get('/payment/{seanceId}', [PaymentController::class, 'show'])->name('payment.show');
+
+Route::get('/payment/{seanceId}', [SeanceController::class, 'payment'])->name('seance.payment');
+
+// Route::get('/payment/{seanceId}', function ($seanceId) {
+//     return view('layouts.client.payment', ['seanceId' => $seanceId]);
+// });
 
 Route::get('/admin_index', function () {
     return view('layouts.admin.admin_index');

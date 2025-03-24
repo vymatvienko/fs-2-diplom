@@ -12,25 +12,30 @@ class IndexController extends Controller
     {
         $selectedDate = $request->query('date', Carbon::today()->toDateString());
 
+        // Загружаем фильмы, у которых есть сеансы на выбранную дату
         $movies = Movie::with(['seances.hall'])
             ->whereHas('seances', function ($query) use ($selectedDate) {
-                $query->whereDate('start_time', $selectedDate);
+                $query->where('date', $selectedDate);
             })
             ->get()
-            ->map(function ($movie) {
+            ->map(function ($movie) use ($selectedDate) {
+                $filteredSeances = $movie->seances->filter(fn($seance) => $seance->date === $selectedDate);
+
                 return (object) [
                     'id'          => $movie->id,
                     'title'       => $movie->title,
                     'poster'      => $movie->poster 
-                        ? asset('client/i/poster1.jpg' . $movie->poster) 
+                        ? asset('client/i/' . $movie->poster) 
                         : asset('client/i/poster2.jpg'),
                     'description' => $movie->description,
                     'duration'    => $movie->duration,
                     'country'     => $movie->country,
-                    'seances'     => $movie->seances, // Оставляем как есть, чтобы в шаблоне работать с коллекцией
+                    'seances'     => $filteredSeances->values(), // Очищаем ключи коллекции
                 ];
-            });
+            })
+            ->filter(fn($movie) => $movie->seances->isNotEmpty()); // Оставляем только фильмы с сеансами
 
+        // Формируем список дат для навигации (7 дней)
         $dates = collect(range(0, 6))->map(fn($dayOffset) => (object) [
             'formatted'   => Carbon::today()->addDays($dayOffset)->toDateString(),
             'day_name'    => Carbon::today()->addDays($dayOffset)->translatedFormat('D'),
@@ -41,6 +46,4 @@ class IndexController extends Controller
 
         return view('layouts.client.index', compact('movies', 'dates', 'selectedDate'));
     }
-
-
 }
