@@ -12,9 +12,6 @@
 git clone https://github.com/vymatvienko/fs-2-diplom.git
 
 
-Замените your-username на ваше имя пользователя GitHub.
-
-
 ### 2. Установка зависимостей
 
 Перейдите в каталог проекта и установите зависимости Composer:
