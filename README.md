@@ -9,7 +9,7 @@
 
 Клонируйте репозиторий на локальную машину:
 
-git clone https://github.com/your-username/cinema-ticket-booking.git
+git clone https://github.com/vymatvienko/fs-2-diplom.git
 
 
 Замените your-username на ваше имя пользователя GitHub.
